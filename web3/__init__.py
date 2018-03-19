@@ -27,6 +27,7 @@ __all__ = [
     "Web3",
     "HTTPProvider",
     "IPCProvider",
+    "WebsocketProvider",
     "TestRPCProvider",
     "EthereumTesterProvider",
     "Account",
