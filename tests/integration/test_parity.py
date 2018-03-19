@@ -160,6 +160,7 @@ def parity_process(
         '--base-path', datadir,
         '--unlock', author,
         '--password', passwordfile,
+        '--ws-origins', '*'
     )
     yield from get_process(command_arguments)
 
@@ -203,10 +204,18 @@ def parity_import_blocks_process(parity_binary, ipc_path, datadir, passwordfile)
     yield from get_process(command_arguments, terminates=True)
 
 
+@pytest.fixture(params=[Web3.IPCProvider, Web3.WebsocketProvider], scope="session")
+def provider(request):
+    return request.param
+
+
 @pytest.fixture(scope="session")
-def web3(parity_process, ipc_path):
+def web3(parity_process, ipc_path, provider):
     wait_for_socket(ipc_path)
-    _web3 = Web3(Web3.IPCProvider(ipc_path))
+    if provider is Web3.IPCProvider:
+        _web3 = Web3(Web3.IPCProvider(ipc_path))
+    else:
+        _web3 = Web3(Web3.WebsocketProvider())
     return _web3
 
 
