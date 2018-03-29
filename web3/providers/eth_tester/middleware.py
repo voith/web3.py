@@ -11,6 +11,7 @@ from cytoolz import (
 )
 from eth_utils import (
     is_dict,
+    is_hex,
     is_string,
 )
 
@@ -35,7 +36,11 @@ def is_named_block(value):
     return value in {"latest", "earliest", "pending"}
 
 
-to_integer_if_hex = apply_formatter_if(is_string, hex_to_integer)
+def is_hexstr(value):
+    return is_string(value) and is_hex(value)
+
+
+to_integer_if_hex = apply_formatter_if(is_hexstr, hex_to_integer)
 
 
 is_not_named_block = complement(is_named_block)
@@ -188,6 +193,7 @@ ethereum_tester_middleware = construct_formatting_middleware(
         ),
         'eth_call': apply_formatters_to_args(
             transaction_params_transformer,
+            apply_formatter_if(is_not_named_block, to_integer_if_hex),
         ),
         'eth_uninstallFilter': apply_formatters_to_args(hex_to_integer),
         # EVM
