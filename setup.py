@@ -1,9 +1,45 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from setuptools import (
-    setup,
-    find_packages,
+from distutils.ccompiler import (
+    new_compiler,
 )
+from distutils.errors import (
+    DistutilsPlatformError,
+)
+from distutils.msvccompiler import (
+    MSVCCompiler,
+)
+
+from setuptools import (
+    find_packages,
+    setup,
+)
+
+compiled_packages = ["cytoolz>=0.9.0,<1.0.0", "lru-dict>=1.1.6,<2.0.0"]
+non_compiled_packages = ["toolz>=0.9.0,<1.0.0", "pylru>=1.0.9,<2.0.0"]
+
+
+install_requires = [
+    "eth-abi>=1.0.0,<2",
+    "eth-account>=0.2.1,<0.3.0",
+    "eth-utils>=1.0.1,<2.0.0",
+    "hexbytes>=0.1.0,<1.0.0",
+    "eth-hash[pycryptodome]",
+    "requests>=2.16.0,<3.0.0",
+    "websockets>=4.0.1",
+    "pypiwin32>=223;platform_system=='Windows'",
+]
+
+
+if new_compiler().compiler_type == 'msvc':
+    try:
+        MSVCCompiler().initialize()
+    except DistutilsPlatformError:
+        install_requires += non_compiled_packages
+    else:
+        install_requires += compiled_packages
+else:
+    install_requires += compiled_packages
 
 
 setup(
@@ -16,18 +52,7 @@ setup(
     author_email='pipermerriam@gmail.com',
     url='https://github.com/ethereum/web3.py',
     include_package_data=True,
-    install_requires=[
-        "cytoolz>=0.9.0,<1.0.0",
-        "eth-abi>=1.0.0,<2",
-        "eth-account>=0.2.1,<0.3.0",
-        "eth-utils>=1.0.1,<2.0.0",
-        "hexbytes>=0.1.0,<1.0.0",
-        "lru-dict>=1.1.6,<2.0.0",
-        "eth-hash[pycryptodome]",
-        "requests>=2.16.0,<3.0.0",
-        "websockets>=4.0.1",
-        "pypiwin32>=223;platform_system=='Windows'",
-    ],
+    install_requires=install_requires,
     setup_requires=['setuptools-markdown'],
     python_requires='>=3.5, <4',
     extras_require={
