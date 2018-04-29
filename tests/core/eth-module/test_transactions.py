@@ -18,7 +18,6 @@ from web3.middleware.simulate_unmined_transaction import (
         pytest.param(
             lambda web3: 999999999999,
             False,
-            marks=pytest.mark.xfail,
         ),
     ),
 )
