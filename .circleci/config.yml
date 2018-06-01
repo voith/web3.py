@@ -27,7 +27,7 @@ common: &common
 
 parity_steps: &parity_steps
   machine:
-    - image: circleci/python:3.6.1
+    image: circleci/python:3.6.1
   working_directory: ~/repo
   steps:
 #    - setup_remote_docker
