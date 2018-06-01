@@ -293,27 +293,27 @@ jobs:
 
   py36-integration-parity-ipc:
     <<: *parity_steps
-    docker:
+    machine:
       - image: circleci/python:3.6-stretch
     environment:
       TOXENV: py36-integration-parity-ipc
       PARITY_VERSION: v1.10.4
 
-  py36-integration-parity-http:
-    <<: *parity_steps
-    docker:
-      - image: circleci/python:3.6-stretch
-    environment:
-      TOXENV: py36-integration-parity-http
-      PARITY_VERSION: v1.10.4
-
-  py36-integration-parity-ws:
-    <<: *parity_steps
-    docker:
-      - image: circleci/python:3.6-stretch
-    environment:
-      TOXENV: py36-integration-parity-ws
-      PARITY_VERSION: v1.10.4
+#  py36-integration-parity-http:
+#    <<: *parity_steps
+#    docker:
+#      - image: circleci/python:3.6-stretch
+#    environment:
+#      TOXENV: py36-integration-parity-http
+#      PARITY_VERSION: v1.10.4
+#
+#  py36-integration-parity-ws:
+#    <<: *parity_steps
+#    docker:
+#      - image: circleci/python:3.6-stretch
+#    environment:
+#      TOXENV: py36-integration-parity-ws
+#      PARITY_VERSION: v1.10.4
 
 #  py36-integration-ethtester-pyethereum:
 #    <<: *common
