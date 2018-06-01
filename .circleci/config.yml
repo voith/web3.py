@@ -26,7 +26,8 @@ common: &common
         key: cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "setup.py" }}-{{ checksum "tox.ini" }}
 
 parity_steps: &parity_steps
-  machine: true
+  machine:
+    - image: circleci/python:3.6.1
   working_directory: ~/repo
   steps:
 #    - setup_remote_docker
