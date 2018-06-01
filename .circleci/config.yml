@@ -26,6 +26,7 @@ common: &common
         key: cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "setup.py" }}-{{ checksum "tox.ini" }}
 
 parity_steps: &parity_steps
+  machine: true
   working_directory: ~/repo
   steps:
     - setup_remote_docker
@@ -293,7 +294,7 @@ jobs:
 
   py36-integration-parity-ipc:
     <<: *parity_steps
-    machine:
+    docker:
       - image: circleci/python:3.6-stretch
     environment:
       TOXENV: py36-integration-parity-ipc
