@@ -334,6 +334,14 @@ jobs:
     environment:
       TOXENV: py36-integration-ethtester
       ETHEREUM_TESTER_CHAIN_BACKEND: eth_tester.backends.PyEVMBackend
+
+  py36-integration-eth-tester-rpc:
+    <<: *common
+    docker:
+      - image: circleci/python:3.6
+    environment:
+      TOXENV: py36-integration-eth-tester-rpc
+
   #
   # Python 3.7
   #
@@ -473,6 +481,7 @@ workflows:
       - py36-integration-parity-http
       - py36-integration-parity-ws
       - py36-integration-ethtester-pyevm
+      - py36-integration-eth-tester-rpc
       - py37-core-eth_abi2
       - py37-core
       - py37-ens

@@ -11,6 +11,7 @@ extras_require = {
         "py-geth>=2.0.1,<3.0.0",
     ],
     'testrpc': ["eth-testrpc>=1.3.3,<2.0.0"],
+    'eth-tester-rpc': ['eth-tester-rpc==0.1.0b1'],
     'linter': [
         "flake8==3.4.1",
         "isort>=4.2.15,<5",
@@ -52,6 +53,7 @@ extras_require = {
 
 extras_require['dev'] = (
     extras_require['tester'] +
+    extras_require['eth-tester-rpc'] +
     extras_require['linter'] +
     extras_require['docs'] +
     extras_require['dev']
