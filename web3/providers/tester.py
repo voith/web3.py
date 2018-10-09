@@ -49,6 +49,14 @@ def is_testrpc_available():
         return False
 
 
+def is_eth_tester_rpc_available():
+    try:
+        import eth_tester_rpc  # noqa: F401
+        return True
+    except ImportError:
+        return False
+
+
 to_integer_if_hex = apply_formatter_if(is_string, hex_to_integer)
 
 
@@ -148,6 +156,38 @@ class TestRPCProvider(HTTPProvider):
         if not is_testrpc_available():
             raise Exception("`TestRPCProvider` requires the `eth-testrpc` package to be installed")
         from testrpc.server import get_application
+
+        application = get_application()
+
+        self.server = make_server(
+            host,
+            port,
+            application,
+        )
+
+        self.thread = spawn(self.server.serve_forever)
+        endpoint_uri = 'http://{0}:{1}'.format(host, port)
+
+        super().__init__(endpoint_uri, *args, **kwargs)
+
+
+from web3.providers.eth_tester.middleware import (
+    default_transaction_fields_middleware,
+    ethereum_tester_fixture_middleware,
+    ethereum_tester_middleware,
+)
+
+class EthTestRPCProvider(HTTPProvider):
+    middlewares = [
+        default_transaction_fields_middleware,
+        ethereum_tester_fixture_middleware,
+        ethereum_tester_middleware,
+    ]
+
+    def __init__(self, host="127.0.0.1", port=8545, *args, **kwargs):
+        if not is_eth_tester_rpc_available():
+            raise Exception("`TestRPCProvider` requires the `eth-testrpc` package to be installed")
+        from eth_tester_rpc.server import get_application
 
         application = get_application()
 
